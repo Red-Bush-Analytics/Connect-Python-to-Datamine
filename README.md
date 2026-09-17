@@ -1,31 +1,95 @@
-# Connect-Python-to-Datamine
+# Connect Python to Datamine
 
-The script in this repository shows how to connect to Datamine when using Python scripting from a Notebook.<br>
-<br>
-You will need Sean Horan's DM commands. This folder needs to be in the same folder as your Python file.  There may be other ways to set up the PATH, but creating a folder for your scripts and putting dmcommands in the folder is the easiest.<br>
-<br>
+This repository provides example code for connecting Python to **Datamine Studio** from a Jupyter Notebook, JupyterLab, or VS Code environment.
 
-This script also requires Michael Prycz's GeostatSpy to read the GSLIB data file. The installation procedure is included.
+The connection uses Sean Horan's **dmstudio** Python library:
 
-You need to have an active Datamine license, and Datamine must be open to your project.
+https://github.com/seanhoran/dmstudio
 
-The script can be in any file, and the data in the Datamine project folder. It is best to keep all your data and Datamine project files in the same folder; otherwise, file management becomes complicated.
+Once installed correctly, `dmstudio` can be imported into Python scripts or notebooks and does **not** need to be located in the same folder as your Python files.
 
-The script runs in Jupyter Notebook/ Jupyter Lab on a local machine. It has not been tested on Google Colab+, Google Drive, or a network.
+## Requirements
 
-The Generic Connection Code notebook explains how to set up and test the connection to Datamine Studio EM/RM/RM2+.  IT contains the following:
-- How to install Sean Horsn's dmstudio Processes library
-- How to edit the dmstudio/initilize.py file for NumPy updates
-- How to set up the Datamine connection
-- How to test the Datamine connection
-- Some examples of commands and processes.
+You will need:
 
-This script has not been tested on all versions of Studio RM. If there are version-specific issues, please let us know.
-We recommend opening Datamine manually from the Windows Start menu (not Explorer or another direct method).  The COM connection may not work if you open Studio from Explorer or by directly calling the StudioRM.exe file.
+- A valid Datamine licence.
+- Datamine Studio installed locally.
+- An active Datamine project open in Studio.
+- Python running locally on the same Windows machine.
+- Sean Horan's `dmstudio` library.
 
-Loading DXF files from the script is possible but causes memory issues in the 3D window; it remains as the LastObjectLoaded, and I have not found a solution in the test version yet.
+We recommend opening **Datamine Studio manually from the Windows Start menu**, then opening the required project before running the Python connection.
 
-Not all commands are visible in the COM connection (ie vein-from-samples).  If a command is not working, try recording it as an HTML script.  If that does not work, it will not work in the Python script either.
+During testing, the COM connection has not always worked correctly when Studio was opened from Windows Explorer, by opening a `.rmproj` file directly, or by calling `StudioRM.exe` programmatically.
 
-Datamine is aware of these issues; it just takes time to find errors and fix them.
+## File Locations
+
+The Python script or notebook can be stored in any folder.
+
+For simplicity, it is recommended that the Datamine project and associated data files are kept together in the Datamine project folder. Using files distributed across multiple folders is possible, but file and path management becomes more complicated.
+
+## Tested Environments
+
+The connection has been tested locally using:
+
+* Jupyter Notebook
+* JupyterLab
+* VS Code
+
+It has **not** been tested with:
+
+* Google Colab
+* Google Drive-based workflows
+* Network-based Python environments
+
+Because the connection uses Windows COM automation, it is intended primarily for Python running locally on the same computer as Datamine Studio.
+
+## Generic Connection Code
+
+The **Generic Connection Code** notebook explains how to configure, connect to, and test Datamine Studio from Python.
+
+It includes:
+
+* Installing Sean Horan's `dmstudio` library.
+* Accessing Datamine processes such as `MGSORT`, `HOLES3D`, and others.
+* Updating the `dmstudio/initialize.py` file where required for newer NumPy versions.
+* Establishing the Datamine COM connection.
+* Checking that an active Datamine project is available.
+* Testing the connection.
+* Examples of Datamine commands and processes called from Python.
+
+The connection approach is intended for use with Studio RM / RM2+ and related Studio applications, subject to the interfaces available in each Datamine version.
+
+## Version Compatibility
+
+The scripts have not been tested against every version of Datamine Studio.
+
+COM behaviour and available commands may differ between Studio versions. If you encounter a version-specific problem, please report the Datamine version and the command or process that is failing.
+
+## Known Limitations
+
+### DXF Files
+
+DXF files can be loaded from Python, but testing has identified problems with subsequent handling of the loaded 3D object.
+
+The DXF may remain as the last object added (LastOBjectAdded) to the Studio 3D environment, and operations such as `SaveAsDatamineFile()` may not behave as expected. Additional problems with object state and memory within the 3D window have also been observed.
+
+A reliable solution has not yet been identified for the versions tested.
+
+### Commands Not Exposed Through COM
+
+Not every Datamine command is available through the Studio COM interface.
+
+For example, some commands such as `vein-from-samples` may not be accessible from Python.
+
+If a command does not work through the COM connection, try recording and running the operation as a Datamine HTML script. If the command cannot be executed through the HTML scripting interface, it is unlikely to be accessible from the Python COM connection.
+
+## Important
+
+This repository demonstrates a practical working connection between Python and Datamine Studio. It should not be assumed that every Studio command, object type, or workflow can be automated through COM.
+
+Datamine is aware of a number of scripting and COM-related limitations. These interfaces continue to evolve, and behaviour may change between software versions.
+
+If you identify a problem, workaround, or version-specific issue, please raise it through the repository so that the information can be shared with other users.
+
 
